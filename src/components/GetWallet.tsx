@@ -1,21 +1,18 @@
 import { PropsWithChildren } from "react";
-import Image from "next/image";
-import { AppShell, Header, Group, ActionIcon, Button } from "@mantine/core";
-import { MoonStars } from "tabler-icons-react";
+import { Button } from "@mantine/core";
+import { PlugConnected } from "tabler-icons-react";
 
 import { useState, useEffect } from "react";
 
-import NavbarSimple from "./NavbarSimple";
-import FooterSimple from "./FooterSimple";
 import { useEthers } from "@usedapp/core";
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal, { local } from "web3modal";
 import { walletConnectOptions } from "../settings";
+import AccountButton from "./AccountButton";
 
-const GetWallet = ({ children }: PropsWithChildren) => {
-  const { account, activate, deactivate, active } = useEthers();
-  const [showModal, setShowModal] = useState(false);
+const GetWallet = () => {
+  const { account, activate, deactivate } = useEthers();
   const [activateError, setActivateError] = useState("");
   const { error } = useEthers();
 
@@ -77,20 +74,20 @@ const GetWallet = ({ children }: PropsWithChildren) => {
   return (
     <div>
       {account ? (
-        <div>
-          Account: {account.substring(0, 6).concat("...")}
-          <Button
-            onClick={() => {
-              deactivate();
-            }}
-          >
-            Disconnect
-          </Button>
-        </div>
+        <AccountButton address={account} onDisconnect={deactivate} />
       ) : (
-        <ActionIcon variant="default" onClick={activateProvider} size={30}>
-          <MoonStars size={16} />
-        </ActionIcon>
+        <Button
+          variant="light"
+          rightIcon={<PlugConnected size={20} />}
+          radius="xl"
+          size="sm"
+          styles={{
+            rightIcon: { marginLeft: 16 },
+          }}
+          onClick={activateProvider}
+        >
+          Connect Wallet
+        </Button>
       )}
     </div>
   );
