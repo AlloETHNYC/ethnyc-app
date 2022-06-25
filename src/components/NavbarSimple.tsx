@@ -7,6 +7,8 @@ import {
   CheckupList,
   Receipt,
 } from "tabler-icons-react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -89,30 +91,29 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "", label: "Companies", icon: BuildingSkyscraper },
-  { link: "", label: "Admin", icon: CheckupList },
-  { link: "", label: "Receiver", icon: Receipt },
+  { link: "/companies", label: "Companies", icon: BuildingSkyscraper },
+  { link: "/admin", label: "Admin", icon: CheckupList },
+  { link: "/receiver", label: "Receiver", icon: Receipt },
 ];
 
 const NavbarSimple = () => {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
+  const { pathname } = useRouter();
+
+  const active = data.find(({ link }) => pathname.startsWith(link))?.label;
 
   const links = data.map((item) => (
-    <a
-      className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
-      })}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-      }}
-    >
-      <item.icon className={classes.linkIcon} />
-      <span>{item.label}</span>
-    </a>
+    <Link href={item.link} passHref>
+      <a
+        className={cx(classes.link, {
+          [classes.linkActive]: item.label === active,
+        })}
+        key={item.label}
+      >
+        <item.icon className={classes.linkIcon} />
+        <span>{item.label}</span>
+      </a>
+    </Link>
   ));
 
   return (
