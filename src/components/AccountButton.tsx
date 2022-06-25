@@ -92,7 +92,6 @@ const AccountButton = ({
             })}
           >
             <Group spacing={7}>
-              {/* <Avatar src={user.image} alt={user.name} radius="xl" size={20} /> */}
               <Jazzicon diameter={20} seed={jsNumberForAddress(address)} />
               <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
                 {shortenAddress(address)}
