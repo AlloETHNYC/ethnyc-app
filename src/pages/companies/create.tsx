@@ -1,8 +1,11 @@
-import { Title, SimpleGrid, Button, TextInput, Stack } from "@mantine/core";
+import { Title, TextInput, Stack, InputWrapper, Button } from "@mantine/core";
 import * as yup from "yup";
+import { ethers } from "ethers";
 import { useForm, yupResolver } from "@mantine/form";
-import { Plus } from "tabler-icons-react";
+
 import BreadcrumbsSimple from "../../components/BreadcrumbsSimple";
+import ImageDropzone from "../../components/ImageDropzone";
+import errors from "../../lib/errors";
 
 const crumbs = [
   { title: "Companies", href: "/companies" },
@@ -13,12 +16,19 @@ const initialValues = {
   name: "",
   description: "",
   tokenAddress: "",
+  logo: null,
 };
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required(),
-  description: yup.string().required(),
-  tokenAddress: yup.string().required(),
+  name: yup.string().required(errors.required("Name")),
+  description: yup.string().required(errors.required("Description")),
+  tokenAddress: yup
+    .string()
+    .test("is-address", errors.address("Token Address"), (value) =>
+      ethers.utils.isAddress(value ?? "")
+    )
+    .required(),
+  logo: yup.mixed().required(),
 });
 
 const CompanyCreate = () => {
@@ -49,6 +59,21 @@ const CompanyCreate = () => {
             placeholder="American company that manufacturers everything"
             {...form.getInputProps("description")}
           />
+          <TextInput
+            required
+            name="tokenAddress"
+            label="Token Address"
+            placeholder="0x000....000"
+            {...form.getInputProps("tokenAddress")}
+          />
+          <InputWrapper label="Logo">
+            <ImageDropzone
+              multiple={false}
+              onDrop={(files) => {}}
+              maxSize={3 * 1024 ** 2}
+            />
+          </InputWrapper>
+          <Button type="submit">Submit</Button>
         </Stack>
       </form>
     </>

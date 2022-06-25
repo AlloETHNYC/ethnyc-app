@@ -49,6 +49,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     const web3Modal = new Web3Modal({
       providerOptions,
     });
+
     try {
       const provider = await web3Modal.connect();
       await activate(provider);
