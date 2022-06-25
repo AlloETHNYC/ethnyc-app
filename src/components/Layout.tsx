@@ -19,28 +19,25 @@ const Layout = ({ children }: PropsWithChildren) => {
   const [activateError, setActivateError] = useState("");
   const { error } = useEthers();
 
-  const [web3, setWeb3] = useState({} as any);
-
   useEffect(() => {
     if (error) {
       setActivateError(error.message);
     }
 
-    // async function getCachedProvider(){
-    //   const cacheProvider = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")
-    //   if(cacheProvider){
-    //     console.log("Cached: "+cacheProvider)
-    //     const web3Modal = new Web3Modal();
-    //     web3Modal.connectTo(cacheProvider)
-    //     const provider = await web3Modal.connect();
-
-    //     setWeb3(provider)
-    //     await activate(provider)
-    //   }
-    // }
+    async function getCachedProvider(){
+      const cacheProvider = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER")
+      const web3Modal = new Web3Modal({
+        providerOptions,
+        cacheProvider: true
+      });
+      if(cacheProvider){        
+        const provider = await web3Modal.connect()
+        await activate(provider)
+      }
+    }
     
-    // console.log("Getting cached")
-    // getCachedProvider()
+    console.log("Getting cached")
+    getCachedProvider()
 
   }, []);
 
