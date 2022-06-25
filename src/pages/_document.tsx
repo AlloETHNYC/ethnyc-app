@@ -1,5 +1,7 @@
 import { createGetInitialProps } from "@mantine/next";
+import { DAppProvider } from "@usedapp/core";
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import { config } from "../settings";
 
 const getInitialProps = createGetInitialProps();
 
@@ -11,8 +13,8 @@ export default class _Document extends Document {
       <Html>
         <Head />
         <body>
-          <Main />
-          <NextScript />
+            <Main />
+            <NextScript />          
         </body>
       </Html>
     );

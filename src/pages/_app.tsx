@@ -2,6 +2,8 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import Layout from "../components/Layout";
+import { DAppProvider } from "@usedapp/core";
+import { config } from "../settings";
 
 const App = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -15,6 +17,7 @@ const App = (props: AppProps) => {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      <DAppProvider config={config}>
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
@@ -27,6 +30,7 @@ const App = (props: AppProps) => {
           <Component {...pageProps} />
         </Layout>
       </MantineProvider>
+      </DAppProvider>
     </>
   );
 };
