@@ -24,7 +24,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tabler-icons-react": "^1.51.0",
-    "web3modal": "^1.9.8"
+    "web3modal": "^1.9.8",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "18.0.0",

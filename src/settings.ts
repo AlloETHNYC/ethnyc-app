@@ -21,6 +21,7 @@ export const ActiveChain: Chain = {
 }
 
 export const config: Config = {
+    autoConnect: true,
     readOnlyChainId: ActiveChain.chainId,
     readOnlyUrls: {
         [ActiveChain.chainId]: 'https://rpc-mumbai.maticvigil.com',
