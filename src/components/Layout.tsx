@@ -7,11 +7,12 @@ import { useState, useEffect } from "react";
 
 import NavbarSimple from "./NavbarSimple";
 import FooterSimple from "./FooterSimple";
-import {MumbaiChain} from "../settings"
+import {ActiveChain} from "../settings"
 import { useEthers } from "@usedapp/core";
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from 'web3modal'
+import { useLocalStorage } from "@mantine/hooks";
 
 const Layout = ({ children }: PropsWithChildren) => {
 
@@ -20,11 +21,16 @@ const Layout = ({ children }: PropsWithChildren) => {
   const [activateError, setActivateError] = useState('')
   const { error } = useEthers()
 
+
   useEffect(() => {
+
+    console.log("ReRender")
+
     if (error) {
       setActivateError(error.message)
     }
-  }, [error])
+
+  }, [])
 
   const activateProvider = async () => {
     const providerOptions = {
@@ -39,10 +45,10 @@ const Layout = ({ children }: PropsWithChildren) => {
         package: WalletConnectProvider,
         options: {
           rpc: {
-            80001: 'https://rpc-mumbai.maticvigil.com'
+            [ActiveChain.chainId]: ActiveChain.rpcUrl
           },
-          chianId: 80001,
-          network: "mumbai",
+          chianId: ActiveChain.chainId,
+          network: ActiveChain.chainName,
         },
       },
     }
@@ -52,6 +58,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     })
     try {
       const provider = await web3Modal.connect()
+      console.log(provider)
       await activate(provider)
       setActivateError('')
     } catch (error: any) {

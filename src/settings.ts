@@ -2,9 +2,9 @@ import { Config, Mainnet } from "@usedapp/core";
 import { getDefaultProvider } from "ethers";
 import { Chain } from '@usedapp/core'
 
-export const MumbaiChain: Chain = {
+export const ActiveChain: Chain = {
   chainId: 80001,
-  chainName: 'Mumbai',
+  chainName: 'mumbai',
   isTestChain: true,
   isLocalChain: false,
   multicallAddress: '0x0000000000000000000000000000000000000000',
@@ -21,9 +21,9 @@ export const MumbaiChain: Chain = {
 }
 
 export const config: Config = {
-    readOnlyChainId: MumbaiChain.chainId,
+    readOnlyChainId: ActiveChain.chainId,
     readOnlyUrls: {
-        [MumbaiChain.chainId]: 'https://rpc-mumbai.maticvigil.com',
+        [ActiveChain.chainId]: 'https://rpc-mumbai.maticvigil.com',
     },
-    networks: [MumbaiChain]
+    networks: [ActiveChain]
 }
