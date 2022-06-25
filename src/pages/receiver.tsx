@@ -25,7 +25,7 @@ const data = [
 const Receiver = () => {
   const { account } = useEthers();
   const { result } = useSuperfluidQuery({
-    query: (sf) => sf.query.listStreams({ sender: account }),
+    query: (sf) => sf.query.listStreams({ receiver: account }),
     enabled: !!account,
   });
 
