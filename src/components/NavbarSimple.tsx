@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { createStyles, Navbar, Group, Code, Box } from "@mantine/core";
+import React from "react";
+import { createStyles, Navbar } from "@mantine/core";
 import {
   BuildingSkyscraper,
   SwitchHorizontal,
@@ -103,12 +103,11 @@ const NavbarSimple = () => {
   const active = data.find(({ link }) => pathname.startsWith(link))?.label;
 
   const links = data.map((item) => (
-    <Link href={item.link} passHref>
+    <Link key={item.label} href={item.link} passHref>
       <a
         className={cx(classes.link, {
           [classes.linkActive]: item.label === active,
         })}
-        key={item.label}
       >
         <item.icon className={classes.linkIcon} />
         <span>{item.label}</span>

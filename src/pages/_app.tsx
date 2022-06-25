@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { Global, MantineProvider } from "@mantine/core";
 import Layout from "../components/Layout";
 import { DAppProvider } from "@usedapp/core";
 import { config } from "../settings";
@@ -18,18 +18,25 @@ const App = (props: AppProps) => {
         />
       </Head>
       <DAppProvider config={config}>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "light",
-        }}
-      >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </MantineProvider>
+        <MantineProvider
+          withGlobalStyles
+          withNormalizeCSS
+          theme={{
+            /** Put your mantine theme override here */
+            colorScheme: "light",
+          }}
+        >
+          <Global
+            styles={() => ({
+              ".web3modal-modal-lightbox": {
+                zIndex: "101 !important",
+              },
+            })}
+          />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </MantineProvider>
       </DAppProvider>
     </>
   );

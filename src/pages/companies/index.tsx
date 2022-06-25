@@ -1,7 +1,9 @@
-import { Title, SimpleGrid, Button } from "@mantine/core";
+import { Title, SimpleGrid, Button, Group } from "@mantine/core";
+import Link from "next/link";
 import { Plus } from "tabler-icons-react";
+import BreadcrumbsSimple from "../../components/BreadcrumbsSimple";
 
-import CompanyCard from "./CompanyCard";
+import CompanyCard from "../../components/CompanyCard";
 
 const companies = [
   {
@@ -20,14 +22,24 @@ const companies = [
   },
 ];
 
+const crumbs = [{ title: "Companies", href: "/companies" }];
 const Companies = () => (
   <>
-    <Title order={1}>Companies</Title>
-    <Button rightIcon={<Plus size={18} />} sx={{ paddingRight: 12 }}>
-      Create new
-    </Button>
+    <BreadcrumbsSimple items={crumbs} />
+    <Group mt="lg" position="apart">
+      <Title order={1}>Companies</Title>
+      <Link href="/companies/create" passHref>
+        <Button
+          component="a"
+          rightIcon={<Plus size={18} />}
+          sx={{ paddingRight: 12 }}
+        >
+          Create new
+        </Button>
+      </Link>
+    </Group>
 
-    <SimpleGrid cols={3} spacing="lg" mt="md">
+    <SimpleGrid cols={3} spacing="lg" mt="lg">
       {companies.map((props) => (
         <CompanyCard key={props.title} {...props} />
       ))}
