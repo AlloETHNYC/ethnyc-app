@@ -26,3 +26,10 @@ export const walletConnectOptions = {
   chainId: ActiveChain.chainId,
   network: ActiveChain.chainName,
 };
+
+export const factoryInfo = {
+  address: "0x018ae9882921bfffb7fef8f27e8dfc6b4053f0b0",
+  deployBlock: 26906368
+}
+
+export const GRAPH_API = "https://api.thegraph.com/subgraphs/name/ewitulsk/allo"
