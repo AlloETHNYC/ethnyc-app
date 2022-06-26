@@ -1,4 +1,5 @@
 import React from "react";
+import CountUp from "react-countup";
 import {
   createStyles,
   Table,
@@ -13,7 +14,7 @@ import {
 } from "@mantine/core";
 import { IStream } from "@superfluid-finance/sdk-core";
 import Address from "./Address";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { format } from "date-fns";
 import { nameToLogoUrl } from "../lib/tokens";
 
@@ -31,6 +32,29 @@ type TableReviewsProps = PaperProps<"div"> & {
   streams: IStream[];
 };
 
+const getComputed = (createdAtTimestamp: number, currentFlowRate: string) => {
+  const date = new Date(createdAtTimestamp * 1000);
+  const dailyFlowRate: any = BigInt(24 * 60 * 60) * BigInt(currentFlowRate);
+
+  const now = Math.round(Date.now() / 1000);
+  const elapsed = now - createdAtTimestamp;
+  const start = BigInt(elapsed) * BigInt(currentFlowRate);
+  const end = start + BigInt(3600) * BigInt(currentFlowRate);
+
+  const computed = {
+    createdAtDate: format(date, "dd MMM yyyy"),
+    flowRate: ethers.utils.formatEther(currentFlowRate),
+    dailyFlowRate: ethers.utils.formatEther(dailyFlowRate),
+    countUp: {
+      start,
+      end,
+      duration: 3600,
+    },
+  };
+
+  return computed;
+};
+
 const StreamsTable = ({ streams, ...props }: TableReviewsProps) => {
   const { classes, theme } = useStyles();
 
@@ -43,6 +67,11 @@ const StreamsTable = ({ streams, ...props }: TableReviewsProps) => {
       token: { symbol },
       currentFlowRate,
     }) => {
+      const { createdAtDate, flowRate, dailyFlowRate, countUp } = getComputed(
+        createdAtTimestamp,
+        currentFlowRate
+      );
+
       return (
         <tr key={id}>
           <td>
@@ -51,14 +80,44 @@ const StreamsTable = ({ streams, ...props }: TableReviewsProps) => {
           <td>
             <Address address={receiver} />
           </td>
-          <td>{format(new Date(createdAtTimestamp * 1000), "dd MMM yyyy")}</td>
+          <td>{createdAtDate}</td>
           <td>
-            <Group>
+            <Group noWrap>
               <img style={{ maxHeight: "16px" }} src={nameToLogoUrl[symbol]} />
               {symbol}
             </Group>
           </td>
-          <td>{ethers.utils.formatEther(currentFlowRate)}</td>
+          <td>
+            <Text sx={{ fontFamily: "monospace" }}>{flowRate}</Text>
+          </td>
+          <td>
+            <Text sx={{ fontFamily: "monospace" }}>{dailyFlowRate}</Text>
+          </td>
+          <td>
+            <Text sx={{ fontFamily: "monospace", minWidth: 230 }}>
+              {/* @ts-ignore */}
+              <CountUp
+                // start={-875.039}
+                // end={160527.012}
+                // duration={2.75}
+                {...countUp}
+                separator=" "
+                decimals={4}
+                decimal=","
+                prefix=""
+                suffix=""
+                formattingFn={(value) =>
+                  ethers.utils.formatEther(BigNumber.from(String(value)))
+                }
+              >
+                {({ countUpRef, start }) => (
+                  <div>
+                    <span ref={countUpRef} />
+                  </div>
+                )}
+              </CountUp>
+            </Text>
+          </td>
           {/* <td>{Intl.NumberFormat().format(totalReviews)}</td> */}
         </tr>
       );
@@ -76,6 +135,8 @@ const StreamsTable = ({ streams, ...props }: TableReviewsProps) => {
               <th>Created At</th>
               <th>Currency</th>
               <th>Current Flow Rate</th>
+              <th>Daily Flow Rate</th>
+              <th>Received Total</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

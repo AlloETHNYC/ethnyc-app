@@ -10,79 +10,76 @@ import { useState, useEffect } from "react";
 
 import { getUsersCompanies } from "../../utils";
 
-
 const crumbs = [{ title: "Companies", href: "/companies" }];
 const Companies = () => {
+  const { account, library } = useEthers();
 
-  const {account, library} = useEthers();
-
-  const [companies, setCompanies] = useState([  {
-    image: "/images/companies/createNew.jpg",
-    name: "Missing Companies",
-    description: "Create a company today!",
-    country: "USA",
-    vestingPeriod: 3,
-    badges: [{ emoji: "🚗", label: "Create!" }],
-  },]);
+  const [companies, setCompanies] = useState([
+    {
+      image: "/images/companies/createNew.jpg",
+      name: "Missing Companies",
+      description: "Create a company today!",
+      country: "USA",
+      vestingPeriod: 3,
+      badges: [{ emoji: "🚗", label: "Create!" }],
+    },
+  ]);
 
   useEffect(() => {
-
-    async function runAsync(){
-        if(account){
-            const userCompanies = await getUsersCompanies(account)
-            console.log(userCompanies)
-            if(userCompanies.data.data){
-              console.log("Mapping")
-              const mappedCompanies = userCompanies.data.data.companies.map((company: any) => {
-                return(
-                  {
-                    image: company.baseURI,
-                    name: company.name,
-                    description: company.description,
-                    country: "USA",
-                    badges: [{ emoji: "🖥️", label: "Crypto" }],
-                    deployedAddr: company.deployedAddr,
-                    vestingPeriod: company.vestingPeriod
-                  }
-                )
-              })
-  
-              console.log(mappedCompanies)
-  
-  
-              setCompanies(mappedCompanies)
+    async function runAsync() {
+      if (account) {
+        const userCompanies = await getUsersCompanies(account);
+        console.log(userCompanies);
+        if (userCompanies.data.data) {
+          console.log("Mapping");
+          const mappedCompanies = userCompanies.data.data.companies.map(
+            (company: any) => {
+              return {
+                image: company.baseURI,
+                name: company.name,
+                description: company.description,
+                country: "USA",
+                badges: [{ emoji: "🖥️", label: "Crypto" }],
+                deployedAddr: company.deployedAddr,
+                vestingPeriod: company.vestingPeriod,
+              };
             }
-            
-        }
-    }
-    runAsync()
-    
-  }, [account])
-  
-  return(
-  <>
-    <BreadcrumbsSimple items={crumbs} />
-    <Group mt="lg" position="apart">
-      <Title order={1}>Companies</Title>
-      <Link href="/companies/create" passHref>
-        <Button
-          component="a"
-          rightIcon={<Plus size={18} />}
-          sx={{ paddingRight: 12 }}
-        >
-          Create new
-        </Button>
-      </Link>
-    </Group>
+          );
 
-    <SimpleGrid cols={3} spacing="lg" mt="lg">
-      {companies ?
-       companies.map((props) => (
-        <CompanyCard key={props.name} {...props} />
-      ))
-      : <div></div>}
-    </SimpleGrid>
-  </>
-)};
+          console.log(mappedCompanies);
+
+          setCompanies(mappedCompanies);
+        }
+      }
+    }
+    runAsync();
+  }, [account]);
+
+  return (
+    <>
+      <BreadcrumbsSimple items={crumbs} />
+      <Group mt="lg" position="apart">
+        <Title order={1}>Companies</Title>
+        <Link href="/companies/create" passHref>
+          <Button
+            component="a"
+            rightIcon={<Plus size={18} />}
+            sx={{ paddingRight: 12 }}
+          >
+            Create new
+          </Button>
+        </Link>
+      </Group>
+
+      <SimpleGrid cols={3} spacing="lg" mt="lg">
+        {companies ? (
+          companies.map((props) => <CompanyCard key={props.name} {...props} />)
+        ) : (
+          <div></div>
+        )}
+      </SimpleGrid>
+    </>
+  );
+};
 
 export default Companies;
