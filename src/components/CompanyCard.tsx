@@ -12,6 +12,8 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 
+import Link from "next/link";
+
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -40,9 +42,10 @@ const useStyles = createStyles((theme) => ({
 
 interface CompanyCardProps {
   image: string;
-  title: string;
+  name: string;
   country: string;
   description: string;
+  deployedAddr: string;
   badges: {
     emoji: string;
     label: string;
@@ -51,10 +54,11 @@ interface CompanyCardProps {
 
 const CompanyCard = ({
   image,
-  title,
+  name,
   description,
   country,
   badges,
+  deployedAddr
 }: CompanyCardProps) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -72,13 +76,13 @@ const CompanyCard = ({
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
-        <Image src={image} alt={title} height={180} />
+        <Image src={image} alt={name} height={180} />
       </Card.Section>
 
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
           <Text size="lg" weight={500}>
-            {title}
+            {name}
           </Text>
           <Badge size="sm">{country}</Badge>
         </Group>
@@ -97,9 +101,11 @@ const CompanyCard = ({
       </Card.Section>
 
       <Group mt="xs">
-        <Button radius="md" style={{ flex: 1 }}>
-          Show details
-        </Button>
+        <Link href={`/admin/${encodeURIComponent(deployedAddr)}`}>
+          <Button radius={"md"} style={{ flex: 1 }} >
+            Show details
+          </Button>
+        </Link>
         <ActionIcon variant="default" radius="md" size={36}>
           <Heart size={18} className={classes.like} />
         </ActionIcon>
