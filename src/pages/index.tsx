@@ -2,6 +2,7 @@ import { Title } from "@mantine/core";
 import { useEtherBalance, useEthers } from "@usedapp/core";
 import { formatEther } from "ethers/lib/utils";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import ApproveAmount from "../components/ApproveAmount";
 
@@ -10,6 +11,11 @@ const Home: NextPage = () => {
   //const balance = useEtherBalance(account);
   //const logs = useAccountCompanies();
 
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push("/companies")
+  }, [])
 
   return (
     <div>
