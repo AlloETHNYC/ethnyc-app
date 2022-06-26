@@ -63,7 +63,7 @@ const CompanyCreate = () => {
   // NOTE: Does not belong here
   async function depositToken(amount: number){
     const companyContract = new Contract(factoryInfo.address, FACTORY_ABI, library?.getSigner());  
-    await companyContract.deposit(BigNumber.from(amount).mul((BigNumber.from(10).pow(18)));
+    await companyContract.deposit(BigNumber.from(amount).mul((BigNumber.from(10).pow(18))));
   };
 
   async function createAllocationStream(receiverAddr: string, amount: number){
