@@ -27,14 +27,15 @@ const Employee = () => {
     useEffect(()=>{
         async function asyncFunc() {
             const _streamInfo = await getStreamInfo();
+            console.log("Stream Info:")
             console.log(_streamInfo)
             setStreamInfo(_streamInfo)
         }
-        if(deployedAddr && (deployedAddr as string).startsWith("0x") && account){
+        if(deployedAddr && (deployedAddr as string).startsWith("0x") && account && library){
             asyncFunc();
         }
         
-    }, [deployedAddr])
+    }, [deployedAddr,account])
 
     return(
         <div>

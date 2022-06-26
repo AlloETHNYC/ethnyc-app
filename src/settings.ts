@@ -32,7 +32,7 @@ export const walletConnectOptions = {
 };
 
 export const factoryInfo = {
-  address: "0xBF0d027c741B37356BdC0FF98ab95B70103d4B57",
+  address: "0x0454603a57C72f53f7a078ce52c7E7ADD4201D47",
   deployBlock: 26913073,
 };
 

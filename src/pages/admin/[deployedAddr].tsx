@@ -27,7 +27,7 @@ const Admin = () => {
       ERC20ABI,
       library?.getSigner()
     );
-    await tokenContract.approve(spender, depAmount);
+    await tokenContract.approve(spender, BigNumber.from(amount).mul(BigNumber.from(10).pow(18)).toString());
   }
 
   async function depositToken(amount: number, companyAddr: string) {
@@ -37,7 +37,7 @@ const Admin = () => {
       library?.getSigner()
     );
     await companyContract.deposit(
-      BigNumber.from(amount).mul(BigNumber.from(10).pow(18))
+      BigNumber.from(amount).mul(BigNumber.from(10).pow(18)).toString()
     );
   }
 
@@ -80,16 +80,16 @@ const Admin = () => {
     return flowRate;
   }
 
-  async function getTokenSupply(companyAddr: string) {
-    console.log('Company Addr: ' + companyAddr);
-    const companyContract = new Contract(
-      companyAddr,
-      COMPANY_ABI,
-      library?.getSigner()
-    );
-    const totalSupply = await companyContract.tokenIdTracker();
-    return totalSupply;
-  }
+//   async function getTokenSupply(companyAddr: string) {
+//     console.log('Company Addr: ' + companyAddr);
+//     const companyContract = new Contract(
+//       companyAddr,
+//       COMPANY_ABI,
+//       library?.getSigner()
+//     );
+//     const totalSupply = await companyContract.tokenIdTracker();
+//     return totalSupply;
+//   }
 
   async function getNFTOwner(companyAddr: string, tokenId: number) {
     const companyContract = new Contract(
@@ -102,18 +102,22 @@ const Admin = () => {
   }
 
   async function getNFTList(companyAddr: string) {
-    const totalSupply = await getTokenSupply(companyAddr);
-    console.log(totalSupply);
     let nftList = [];
 
-    for (let tokenId = 0; tokenId < totalSupply; tokenId++) {
-      const owner = await getNFTOwner(companyAddr, tokenId);
+    for (let tokenId = 0; tokenId < 255; tokenId++) {
+        try{
+            const owner = await getNFTOwner(companyAddr, tokenId);
 
-      nftList.push({
-        owner: owner,
-        tokenId: tokenId,
-        companyAddr: companyAddr,
-      });
+            nftList.push({
+                owner: owner,
+                tokenId: tokenId,
+                companyAddr: companyAddr,
+            });
+        }
+        catch(e){
+            console.log(e)
+            break
+        }    
     }
     return nftList;
   }
@@ -133,12 +137,36 @@ const Admin = () => {
   const [reciever, setReciever] = useState('');
   const [token, setToken] = useState('');
 
+//   const [streamInfo, setStreamInfo] = useState({})
+    
+//     async function getStreamInfo(){
+//         console.log("Contract: " + deployedAddr)
+//         const company = new Contract(deployedAddr as string, COMPANY_ABI, library?.getSigner());
+//         const streamInfo = await company.getStreamInfo(account);
+//         return streamInfo;
+//     }
+
+//     useEffect(()=>{
+//         async function asyncFunc() {
+//             const _streamInfo = await getStreamInfo();
+//             console.log("Stream Info:")
+//             console.log(_streamInfo)
+//             setStreamInfo(_streamInfo)
+//         }
+//         if(deployedAddr && (deployedAddr as string).startsWith("0x") && account){
+//             asyncFunc();
+//         }
+        
+//     }, [deployedAddr])
+
   useEffect(() => {
     async function asycnFunc() {
       //console.log(deployedAddr)
       if (deployedAddr && library) {
-        //const nftList = await getNFTList(deployedAddr as string);
-        //console.log(nftList)
+        const nftList = await getNFTList(deployedAddr as string);
+        console.log(nftList)
+        //const nftTokenSupply = await getTokenSupply(deployedAddr as string)
+        //console.log(nftTokenSupply)
 
         const tokenAddr = await getToken(deployedAddr as string);
         console.log(tokenAddr);
