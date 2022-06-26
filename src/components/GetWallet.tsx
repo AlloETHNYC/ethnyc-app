@@ -27,11 +27,14 @@ const GetWallet = () => {
       const cacheProvider = localStorage.getItem(
         "WEB3_CONNECT_CACHED_PROVIDER"
       );
-      const web3Modal = new Web3Modal({
-        providerOptions,
-        cacheProvider: true,
-      });
+
+      console.log(providerOptions)
+      
       if (cacheProvider) {
+        const web3Modal = new Web3Modal({
+          providerOptions,
+          cacheProvider: true,
+        });
         const provider = await web3Modal.connect();
         await activate(provider);
       }

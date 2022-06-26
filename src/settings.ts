@@ -1,15 +1,17 @@
 import { Config, Mumbai as _Mumbai } from "@usedapp/core";
 import { Chain } from "@usedapp/core";
 
-type SafeChain = Chain & { rpcUrl: string; networkName: string };
+type SafeChain = Chain & { rpcUrl: string; networkName: string; chainId: number};
 
 const MUMBAI_RPC_URL = "https://rpc-mumbai.maticvigil.com";
 const MUMBAI_NETWORK_NAME = "polygon-mumbai";
+const MUMBAI_CHAIN_ID = 80001;
 
 const Mumbai: SafeChain = {
   ..._Mumbai,
   rpcUrl: MUMBAI_RPC_URL,
   networkName: MUMBAI_NETWORK_NAME,
+  chainId: MUMBAI_CHAIN_ID
 };
 
 export const ActiveChain: SafeChain = Mumbai;
@@ -26,7 +28,7 @@ export const walletConnectOptions = {
     [ActiveChain.chainId]: ActiveChain.rpcUrl,
   },
   chainId: ActiveChain.chainId,
-  network: ActiveChain.chainName,
+  network: ActiveChain.chainName.toLowerCase(),
 };
 
 export const factoryInfo = {
