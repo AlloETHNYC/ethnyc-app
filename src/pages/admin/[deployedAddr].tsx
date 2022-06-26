@@ -2,10 +2,12 @@ import { BigNumber, Contract } from "ethers";
 import { useRouter } from "next/router"
 import { FACTORY_ABI } from "../../ABIs/factory";
 import { factoryInfo } from "../../settings";
+import { useEthers } from "@usedapp/core";
 
 const Admin = () => {
     const router = useRouter()
     const {deployedAddr} = router.query
+
     const {library} = useEthers();
 
     async function createAllocationStream(receiverAddr: string, amount: number){
@@ -31,7 +33,3 @@ const Admin = () => {
 }
 
 export default Admin
-
-function useEthers(): { library: any; } {
-    throw new Error("Function not implemented.");
-}

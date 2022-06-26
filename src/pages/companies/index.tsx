@@ -11,38 +11,17 @@ import { useState, useEffect } from "react";
 import { getUsersCompanies } from "../../utils";
 
 
-// const companies = [
-//   {
-//     image: "/images/companies/apple.png",
-//     title: "Apple Co.",
-//     description: "We make computers.",
-//     country: "USA",
-//     badges: [{ emoji: "🖥️", label: "Hardware" }],
-//   },
-  // {
-  //   image: "/images/companies/tesla.png",
-  //   title: "Tesla Motors",
-  //   description: "We make cars.",
-  //   country: "USA",
-  //   badges: [{ emoji: "🚗", label: "Automotive" }],
-  // },
-// ];
-
-
-
-
-
 const crumbs = [{ title: "Companies", href: "/companies" }];
 const Companies = () => {
 
   const {account, library} = useEthers();
 
   const [companies, setCompanies] = useState([  {
-    image: "/images/companies/tesla.png",
-    name: "Tesla Motors",
-    description: "We make cars.",
+    image: "/images/companies/createNew.jpg",
+    name: "Missing Companies",
+    description: "Create a company today!",
     country: "USA",
-    badges: [{ emoji: "🚗", label: "Automotive" }],
+    badges: [{ emoji: "🚗", label: "Create!" }],
   },]);
 
   useEffect(() => {
@@ -50,24 +29,28 @@ const Companies = () => {
     async function runAsync(){
         if(account){
             const userCompanies = await getUsersCompanies(account)
-
-            const mappedCompanies = userCompanies.data.data.companies.map((company: any) => {
-              return(
-                {
-                  image: "/images/companies/apple.png",
-                  name: company.name,
-                  description: "We make computers.",
-                  country: "USA",
-                  badges: [{ emoji: "🖥️", label: "Hardware" }],
-                  deployedAddr: company.deployedAddr
-                }
-              )
-            })
-
-            console.log(mappedCompanies)
-
-
-            setCompanies(mappedCompanies)
+            console.log(userCompanies)
+            if(userCompanies.data.data){
+              console.log("Mapping")
+              const mappedCompanies = userCompanies.data.data.companies.map((company: any) => {
+                return(
+                  {
+                    image: company.baseURI,
+                    name: company.name,
+                    description: company.description,
+                    country: "USA",
+                    badges: [{ emoji: "🖥️", label: "Crypto" }],
+                    deployedAddr: company.deployedAddr
+                  }
+                )
+              })
+  
+              console.log(mappedCompanies)
+  
+  
+              setCompanies(mappedCompanies)
+            }
+            
         }
     }
     runAsync()
@@ -91,9 +74,11 @@ const Companies = () => {
     </Group>
 
     <SimpleGrid cols={3} spacing="lg" mt="lg">
-      {companies.map((props) => (
+      {companies ?
+       companies.map((props) => (
         <CompanyCard key={props.name} {...props} />
-      ))}
+      ))
+      : <div></div>}
     </SimpleGrid>
   </>
 )};

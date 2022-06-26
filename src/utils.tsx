@@ -1,7 +1,6 @@
 import axios from "axios";
 import { sign } from "crypto";
 import { Contract } from "ethers";
-import { COMPANY_ABI } from "./ABIs/company";
 import { GRAPH_API } from "./settings";
 
 export async function getUsersCompanies(account: string) {
@@ -11,10 +10,13 @@ export async function getUsersCompanies(account: string) {
 
     const data = {
         query: `{
-            companies(where: { creator: "0x9807f6d364873b4c649788bc69f39bb73669b012" }) {
+            companies(where: { creator: "${account}" }) {
               id
               creator
               deployedAddr
+              name
+              baseURI
+              description
             }
           }`
     }
