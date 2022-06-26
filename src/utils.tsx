@@ -17,6 +17,36 @@ export async function getUsersCompanies(account: string) {
               name
               baseURI
               description
+              vestingPeriod
+            }
+          }`
+    }
+
+    const result = await axios({
+        url:GRAPH_API,
+        method: "post",
+        headers: headers,
+        data: data
+    })
+
+    return result
+}
+
+export async function getAllCompanies() {
+    const headers = {
+        "content-type": "application/json",
+    };
+
+    const data = {
+        query: `{
+            companies {
+              id
+              creator
+              deployedAddr
+              name
+              baseURI
+              description
+              vestingPeriod
             }
           }`
     }

@@ -32,8 +32,8 @@ export const walletConnectOptions = {
 };
 
 export const factoryInfo = {
-  address: "0x915ee845Ab9C740Ff5937280f6A9fE8040f0ECf7",
-  deployBlock: 26910081,
+  address: "0xBF0d027c741B37356BdC0FF98ab95B70103d4B57",
+  deployBlock: 26913073,
 };
 
 export const superfluidHostInfo = {

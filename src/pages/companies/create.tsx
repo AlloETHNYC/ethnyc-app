@@ -30,6 +30,7 @@ const initialValues = {
   tokenAddress: "",
   logo: "",
   tokenSymbol: "",
+  vestingPeriod: 0
 };
 
 const validationSchema = yup.object().shape({
@@ -54,13 +55,11 @@ const CompanyCreate = () => {
 
   const router = useRouter()
 
-  async function createCompany(companyName: string, description: string, tokenSymbol: string, tokenAddress: string, baseURI: string) {
+  async function createCompany(companyName: string, description: string, tokenSymbol: string, tokenAddress: string, baseURI: string, vestingPeriod: string) {
 
-    const vestingPeriod = BigNumber.from(0)
+    const metaData: [BigNumber, string, string] = [BigNumber.from(vestingPeriod), baseURI, description]
 
-    const metaData: [BigNumber, string, string] = [vestingPeriod, baseURI, description]
-
-    console.log(vestingPeriod, baseURI, description)
+    console.log(BigNumber.from(vestingPeriod), baseURI, description)
 
     const companyContract = new Contract(factoryInfo.address, FACTORY_ABI, library?.getSigner());
     await companyContract.createCompany(
@@ -91,7 +90,7 @@ const CompanyCreate = () => {
       </Title>
       <form onSubmit={form.onSubmit(async (values) => {
         console.log(values)
-        await createCompany(values.name, values.description, values.tokenSymbol, utils.getAddress(values.tokenAddress), values.logo)
+        await createCompany(values.name, values.description, values.tokenSymbol, utils.getAddress(values.tokenAddress), values.logo, values.vestingPeriod.toString())
       })}>
         <Stack mt="lg">
           <TextInput
@@ -121,6 +120,13 @@ const CompanyCreate = () => {
             label="Token Symbol"
             placeholder="APPL"
             {...form.getInputProps("tokenSymbol")}
+          />
+          <TextInput
+            required
+            name="vestingPeriod"
+            label="Vesting Period"
+            placeholder="0"
+            {...form.getInputProps("vestingPeriod")}
           />
           {/*<InputWrapper label="Logo">
             <ImageDropzone

@@ -8,7 +8,8 @@ import CompanyCard from "../../components/CompanyCard";
 import { useEthers } from "@usedapp/core";
 import { useState, useEffect } from "react";
 
-import { getUsersCompanies } from "../../utils";
+import { getAllCompanies, getUsersCompanies } from "../../utils";
+import AllCompanyCard from "../../components/AllCompanyCard";
 
 
 const crumbs = [{ title: "Companies", href: "/companies" }];
@@ -21,7 +22,6 @@ const Companies = () => {
     name: "Missing Companies",
     description: "Create a company today!",
     country: "USA",
-    vestingPeriod: 3,
     badges: [{ emoji: "🚗", label: "Create!" }],
   },]);
 
@@ -29,7 +29,7 @@ const Companies = () => {
 
     async function runAsync(){
         if(account){
-            const userCompanies = await getUsersCompanies(account)
+            const userCompanies = await getAllCompanies()
             console.log(userCompanies)
             if(userCompanies.data.data){
               console.log("Mapping")
@@ -41,8 +41,7 @@ const Companies = () => {
                     description: company.description,
                     country: "USA",
                     badges: [{ emoji: "🖥️", label: "Crypto" }],
-                    deployedAddr: company.deployedAddr,
-                    vestingPeriod: company.vestingPeriod
+                    deployedAddr: company.deployedAddr
                   }
                 )
               })
@@ -78,7 +77,7 @@ const Companies = () => {
     <SimpleGrid cols={3} spacing="lg" mt="lg">
       {companies ?
        companies.map((props) => (
-        <CompanyCard key={props.name} {...props} />
+        <AllCompanyCard key={props.name} {...props} />
       ))
       : <div></div>}
     </SimpleGrid>
