@@ -80,20 +80,6 @@ const CompanyCreate = () => {
     await companyContract.deposit(BigNumber.from(amount).mul((BigNumber.from(10).pow(18))));
   };
 
-  async function createAllocationStream(receiverAddr: string, amount: number){
-    const companyContract = new Contract(factoryInfo.address, FACTORY_ABI, library?.getSigner());  
-    const vestingPeriodInYears = await companyContract.vestingPeriod();
-    const flowRate = calculateFlowRate(vestingPeriodInYears, amount);
-    await companyContract.addReceiver(receiverAddr, flowRate);
-  }
-
-  const SECONDS_PER_YEAR = 60 * 60 * 24 * 365; 
-
-  function calculateFlowRate(vestingPeriodInYears: number, amount: number){
-    const vestingPeriodInSeconds = vestingPeriodInYears * SECONDS_PER_YEAR;
-    const flowRate = amount / vestingPeriodInSeconds;
-    return BigNumber.from(flowRate);
-  }
 
   // async function deleteAllocationStream()
 
