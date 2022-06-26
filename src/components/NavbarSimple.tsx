@@ -92,7 +92,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 const data = [
   { link: "/companies", label: "Companies", icon: BuildingSkyscraper },
-  { link: "/admin", label: "Admin", icon: CheckupList },
   { link: "/receiver", label: "Receiver", icon: Receipt },
 ];
 
