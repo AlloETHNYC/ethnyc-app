@@ -36,5 +36,13 @@ export const factoryInfo = {
   deployBlock: 26906368,
 };
 
+export const superfluidHostInfo = {
+  address: "0xEB796bdb90fFA0f28255275e16936D25d3418603"
+};
+
+export const superfluidTokenFactoryInfo = {
+  address: "0x200657E2f123761662567A1744f9ACAe50dF47E6"
+};
+
 export const GRAPH_API =
   "https://api.thegraph.com/subgraphs/name/ewitulsk/allo";
